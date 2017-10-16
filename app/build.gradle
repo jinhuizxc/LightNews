@@ -10,9 +10,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true // 突破应用方法数65535的一个限制
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
     }
 
     signingConfigs {
+        // debug版
+        debug{}
         release {
             try {
                 storeFile file('../buildsystem/MyApp.jks')
@@ -33,6 +38,38 @@ android {
 //            引用签名
             signingConfig signingConfigs.release
         }
+    }
+
+    // 3、在主module下的build.gradle文件中android节点下配置productFlavors，如下。
+    productFlavors {
+        fir {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "fir"]
+        }
+        _360 {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "360"]
+        }
+        baidu {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
+        }
+        _91 {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "91"]
+        }
+        hiapk {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "hiapk"]
+        }
+        qq {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "qq"]
+        }
+        wandoujia {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
+        }
+        xiaomi {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]
+            // 可以进行包名的更改
+            // resValue "string", "app_name", "xiaomi_app"
+            // (如果出现build fail 是因为app_name重复就可以暂时将string资源里面app_name注释掉)
+        }
+
     }
 }
 
